@@ -1,31 +1,31 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/material.dart';
-import 'signup.dart';
+import "login.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-  
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordController2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
+      
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text("Login Screen"),
         ) ,
         body: Column(
+
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -44,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     TextFormField(
+                      
                       keyboardType: TextInputType.emailAddress,
                       controller: mailController,
                       decoration: InputDecoration(
@@ -52,30 +53,48 @@ class _LoginPageState extends State<LoginPage> {
                         prefixIcon: Icon(Icons.email_outlined),
                         border: OutlineInputBorder(),
                        ),
-                       onChanged: (String email){
+                       onChanged: (String value){
 
                        },
-                       validator: (email){
-                        return email!.isEmpty ? "Please enter an email" : null;
+                       validator: (value){
+                        return value!.isEmpty ? "Please enter an email" : null;
                        },
                     ),
 
                     SizedBox(height: 20,),
 
                     TextFormField(
-                      keyboardType: TextInputType.emailAddress,
                       controller: passwordController,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: "Password",
                         hintText: "Enter password",
                         prefixIcon: Icon(Icons.key),
                         border: OutlineInputBorder(),
                        ),
-                       onChanged: (String password){
+                       onChanged: (String value){
 
                        },
-                       validator: (password){
-                        return password!.isEmpty ? "Please enter an password" : null;
+                       validator: (value){
+                        return value!.isEmpty ? "Please enter an password" : null;
+                       },
+                    ),
+                    SizedBox(height: 20,),
+
+                    TextFormField(
+                      controller: passwordController2,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        hintText: "Enter password",
+                        prefixIcon: Icon(Icons.key),
+                        border: OutlineInputBorder(),
+                       ),
+                       onChanged: (String value){
+
+                       },
+                       validator: (value){
+                        return value!.isEmpty ? "Please enter an password" : null;
                        },
                     ),
                     
@@ -85,34 +104,28 @@ class _LoginPageState extends State<LoginPage> {
                     
                     MaterialButton(
                       minWidth: double.infinity,
-                        onPressed: (){try {
-                          final credential =  FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: mailController.text,
-                            password: passwordController.text
-                          );
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
-                          } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
+                        onPressed: (){             
+                          if(passwordController.text == passwordController2.text){
+                            signUp( mailController.text, passwordController.text);
                           }
-                        }
+                          else{  // aynı olmamalı uyarı
+                          }
                         },
-                        child: Text("Login",style: TextStyle(fontSize: 20),),
+                        child: Text("Sign Up",style: TextStyle(fontSize: 20),),
                         color: Colors.lightBlueAccent,
                         textColor: Colors.white,
                       ),
                     SizedBox(height: 20,),
 
-                    Text("Hesabınız yok mu? Hemen kayıt olun!"),
+                    Text("Zaten hesabınız var mı? Giriş yapın!"),
 
                     MaterialButton(
 
                         onPressed: (){Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const SignUpPage()),
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
                         );},
-                        child: Text("Sign Up",style: TextStyle(fontSize: 20),),
+                        child: Text("Log In",style: TextStyle(fontSize: 20),),
                         color: Colors.lightBlueAccent,
                         textColor: Colors.white,
                       ),
@@ -126,4 +139,22 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 }
+
+Future<void> signUp(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }          
+  }
