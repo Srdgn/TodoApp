@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import "login.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import "homepage.dart";
+import "package:todoapp/service/auth.dart";
+import 'package:todoapp/user.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -14,6 +17,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordController2 = TextEditingController();
+  final AuthService _auth = AuthService();
+  String error = "";
   @override
   Widget build(BuildContext context) {
     
@@ -64,6 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(height: 20,),
 
                     TextFormField(
+                      obscureText: true,
                       controller: passwordController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -82,6 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(height: 20,),
 
                     TextFormField(
+                      obscureText: true,
                       controller: passwordController2,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -104,11 +111,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     
                     MaterialButton(
                       minWidth: double.infinity,
-                        onPressed: (){             
+                        onPressed: ()async{             
                           if(passwordController.text == passwordController2.text){
-                            signUp( mailController.text, passwordController.text);
+                            dynamic result = await _auth.register(mailController.text, passwordController.text);
+                            if(result == null){
+                            setState(() {
+                              error = "Kayıt İşlemi Başarısız";
+                            });
+                          }   
                           }
+                          
                           else{  // aynı olmamalı uyarı
+                            error = "Şifreler Eşleşmiyor";
                           }
                         },
                         child: Text("Sign Up",style: TextStyle(fontSize: 20),),
@@ -130,6 +144,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         textColor: Colors.white,
                       ),
                     SizedBox(height: 20,),
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red,fontSize: 12),
+                    ),
                   ],
                 ),
               ),
@@ -142,6 +160,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
 }
 
+
+/*
 Future<void> signUp(String email, String password) async {
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -158,3 +178,5 @@ Future<void> signUp(String email, String password) async {
       print(e);
     }          
   }
+
+  */

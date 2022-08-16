@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/service/auth.dart';
+import "package:firebase_auth/firebase_auth.dart";
 
 
 
@@ -17,7 +19,13 @@ class _HomepageState extends State<Homepage> {
           child: Column(
             children: [
               Image(
-                image: AssetImage("assets/logo.png"))
+                image: AssetImage("assets/logo.png")),
+              FlatButton.icon(
+                icon: Icon(Icons.logout),
+                label:Text("logout"),
+                onPressed: ()async{
+                  await FirebaseAuth.instance.signOut();
+                })
             ],
           )
           ) 

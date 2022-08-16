@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import "homepage.dart";
+import 'package:todoapp/service/auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,6 +18,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
+  final AuthService _auth = AuthService();
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,7 +67,9 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 20,),
 
                     TextFormField(
+                      //validator: (val)=>val.length < 6 ? "Şifre 6 karakterden uzun olmalı!": null,
                       keyboardType: TextInputType.emailAddress,
+                      obscureText: true,
                       controller: passwordController,
                       decoration: InputDecoration(
                         labelText: "Password",
@@ -85,18 +91,13 @@ class _LoginPageState extends State<LoginPage> {
                     
                     MaterialButton(
                       minWidth: double.infinity,
-                        onPressed: (){try {
-                          final credential =  FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: mailController.text,
-                            password: passwordController.text
-                          );
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
-                          } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
-                          }
-                        }
+                        onPressed: ()async{ 
+                          dynamic result = await _auth.signIn(mailController.text, passwordController.text);
+                          if(result == null){
+                            setState(() {
+                              error = "Giriş İşlemi Başarısız";
+                            });
+                          }     
                         },
                         child: Text("Login",style: TextStyle(fontSize: 20),),
                         color: Colors.lightBlueAccent,
@@ -117,6 +118,10 @@ class _LoginPageState extends State<LoginPage> {
                         textColor: Colors.white,
                       ),
                     SizedBox(height: 20,),
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red,fontSize: 12),
+                    ),
                   ],
                 ),
               ),
