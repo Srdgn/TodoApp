@@ -12,6 +12,7 @@ import 'package:todoapp/home/taskTile.dart';
 import 'package:todoapp/home/taskList.dart';
 import 'package:todoapp/service/database.dart';
 import 'package:todoapp/service/auth.dart';
+import 'package:uuid/uuid.dart';
 
 class Homepage extends StatefulWidget {
 
@@ -50,9 +51,10 @@ class _HomepageState extends State<Homepage> {
           body: TaskList(),
           floatingActionButton: FloatingActionButton(
             onPressed: ()async{
+              var uuid = Uuid();
               final User? user = auth.currentUser;
               final uid = user!.uid;
-              await DatabaseService(uid: user.uid).updateTaskData("Title","Text", user.uid,false);
+              await DatabaseService(uid: user.uid).updateTaskData(uuid.v1(),"Title","Text", user.uid, false);
             },
             child: Icon(Icons.add),
 

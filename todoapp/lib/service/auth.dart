@@ -54,10 +54,10 @@ class AuthService{
   }
 
 
-  Future newTask(String title, String text, String uid, bool checked)async{
+  Future newTask(String id,String title, String text, String uid, bool checked)async{
     try{
       final User? user = auth.currentUser;
-      await DatabaseService(uid: user!.uid).updateTaskData(title ,text, uid, checked);
+      await DatabaseService(uid: user!.uid).updateTaskData(id ,title ,text, uid, checked);
       return ;
     }
     catch(e){

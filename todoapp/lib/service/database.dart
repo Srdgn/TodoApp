@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import "package:firebase_auth/firebase_auth.dart";
 import 'package:todoapp/models/user.dart';
 import 'package:todoapp/models/user2.dart';
 import 'package:todoapp/models/task.dart';
@@ -29,8 +30,9 @@ class DatabaseService{
   }
 
 
-  Future updateTaskData(String title, String text, String uid_task , bool checked)async{
-    return await taskCollection.doc().set({
+  Future updateTaskData(String id,String title, String text, String uid_task , bool checked)async{
+    return await taskCollection.doc(id).set({
+      "id": id,
       "title": title,
       "text": text,
       "uid": uid_task,
@@ -45,6 +47,7 @@ class DatabaseService{
   List<Task> _taskListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc){
       return Task(
+        id: doc.id,
         title: doc.get("title") ?? "",
         text: doc.get("text") ?? "",
         uid: doc.get("uid") ?? "",

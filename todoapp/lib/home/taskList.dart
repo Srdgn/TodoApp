@@ -15,7 +15,6 @@ class _TaskListState extends State<TaskList> {
   Widget build(BuildContext context) {
     final tasks = Provider.of<List<Task>>(context);
     
-    
     return ListView.builder(
       itemCount: tasks.length,
       itemBuilder: (context , index){
