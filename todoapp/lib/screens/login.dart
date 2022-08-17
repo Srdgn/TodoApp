@@ -97,6 +97,12 @@ class _LoginPageState extends State<LoginPage> {
                             setState(() {
                               error = "Giriş İşlemi Başarısız";
                             });
+                          }
+                          else{
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  Homepage()),
+                            );
                           }     
                         },
                         child: Text("Login",style: TextStyle(fontSize: 20),),

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "homepage.dart";
 import "package:todoapp/service/auth.dart";
-import 'package:todoapp/user.dart';
+import 'package:todoapp/models/user.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -14,6 +14,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final nameController = TextEditingController();
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordController2 = TextEditingController();
@@ -27,7 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text("Login Screen"),
+          title: Text("SignUp Screen"),
         ) ,
         body: Column(
 
@@ -35,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Login",
+              "SignUp",
               style: TextStyle(fontSize: 32,
               color: Colors.lightBlueAccent,
               fontWeight: FontWeight.bold),
@@ -48,6 +49,26 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Form(
                 child: Column(
                   children: [
+                    TextFormField(
+                      
+                      
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: "Name",
+                        hintText: "Enter Name",
+                        prefixIcon: Icon(Icons.email_outlined),
+                        border: OutlineInputBorder(),
+                       ),
+                       onChanged: (String value){
+
+                       },
+                       validator: (value){
+                        return value!.isEmpty ? "Please enter a name" : null;
+                       },
+                    ),
+
+                    SizedBox(height: 20,),
+
                     TextFormField(
                       
                       keyboardType: TextInputType.emailAddress,
@@ -113,12 +134,19 @@ class _SignUpPageState extends State<SignUpPage> {
                       minWidth: double.infinity,
                         onPressed: ()async{             
                           if(passwordController.text == passwordController2.text){
-                            dynamic result = await _auth.register(mailController.text, passwordController.text);
+                            dynamic result = await _auth.register(mailController.text, passwordController.text,nameController.text);
+
                             if(result == null){
                             setState(() {
                               error = "Kayıt İşlemi Başarısız";
                             });
-                          }   
+                            }   
+                            else{
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>  Homepage()),
+                              );
+                            }
                           }
                           
                           else{  // aynı olmamalı uyarı
@@ -159,24 +187,3 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
 }
-
-
-/*
-Future<void> signUp(String email, String password) async {
-    try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }          
-  }
-
-  */

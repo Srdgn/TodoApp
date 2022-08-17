@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/service/auth.dart';
 import 'package:todoapp/service/wrapper.dart';
-import 'package:todoapp/user.dart';
+import 'package:todoapp/models/user.dart';
 import "service/wrapper.dart";
 import "package:provider/provider.dart";
 

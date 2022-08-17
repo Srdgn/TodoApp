@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:firebase_auth/firebase_auth.dart";
-import 'package:todoapp/user.dart';
-
+import 'package:todoapp/service/database.dart';
+import 'package:todoapp/models/user.dart';
 
 class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
 
   MyUser? _userFromFirebaseUser(User? user){
@@ -39,12 +40,27 @@ class AuthService{
     }
   }
 
-  Future register(String email, String password)async{
+  Future register(String email, String password, String name)async{
     try{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user= result.user;
+
+      await DatabaseService(uid: user!.uid).updateUserData(name);
       return _userFromFirebaseUser(user);
     }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
+
+  Future newTask(String title, String text, String uid, bool checked)async{
+    try{
+      final User? user = auth.currentUser;
+      await DatabaseService(uid: user!.uid).updateTaskData(title ,text, uid, checked);
+      return ;
+    }
+    catch(e){
       print(e.toString());
       return null;
     }
