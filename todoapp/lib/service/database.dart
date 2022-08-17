@@ -57,5 +57,9 @@ class DatabaseService{
   }
 
 
+  Future deleteTaskData(String id)async{
+    return await taskCollection.doc(id).delete();
+  }
+
 
 }

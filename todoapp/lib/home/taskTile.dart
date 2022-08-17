@@ -34,8 +34,15 @@ class _TaskTileState extends State<TaskTile> {
           ),
           title: Text(widget.task.title),
           subtitle: Text(widget.task.text),
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            color: Colors.redAccent,
+            onPressed: () async{
+              await DatabaseService(uid: user.uid).deleteTaskData(widget.task.id);
+            },
+          ),
         ),
-        ),
-      );
+      )
+    );
   }
 }
