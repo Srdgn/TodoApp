@@ -3,6 +3,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:provider/provider.dart";
 import 'package:todoapp/models/task.dart';
 import 'package:todoapp/home/taskTile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TaskList extends StatefulWidget {
 
@@ -14,11 +15,15 @@ class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     final tasks = Provider.of<List<Task>>(context);
-    
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
     return ListView.builder(
       itemCount: tasks.length,
       itemBuilder: (context , index){
+
         return TaskTile(task: tasks[index]);
+
       },
       );
   }

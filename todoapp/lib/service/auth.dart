@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:todoapp/service/database.dart';
 import 'package:todoapp/models/user.dart';
+import 'package:todoapp/models/task.dart';
 
 class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,7 +19,6 @@ class AuthService{
     return _auth.authStateChanges()
       .map((User? user)=>_userFromFirebaseUser(user!)!);
   }
-
 
   Future signOut()async{
     try{

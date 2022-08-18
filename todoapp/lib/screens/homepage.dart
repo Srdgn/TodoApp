@@ -13,6 +13,7 @@ import 'package:todoapp/home/taskList.dart';
 import 'package:todoapp/service/database.dart';
 import 'package:todoapp/service/auth.dart';
 import 'package:uuid/uuid.dart';
+import "package:todoapp/home/navigationDrawer.dart";
 
 class Homepage extends StatefulWidget {
 
@@ -30,22 +31,12 @@ class _HomepageState extends State<Homepage> {
       initialData: [],
       value: DatabaseService().tasks,
       child: Scaffold(
+          endDrawer: NavigationDrawerWidget(),
           appBar: AppBar(
           title: Text('Tasks'),
-          backgroundColor: Colors.brown[400],
+          backgroundColor: Colors.blueAccent,
           elevation: 0.0,
           actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.logout),
-              label: Text('logout'),
-              onPressed: () async {
-                await _auth.signOut();
-                Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>  LoginPage()),
-                            );
-              },
-            ),
           ],
         ),
           body: TaskList(),

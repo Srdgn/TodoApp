@@ -19,30 +19,32 @@ class _TaskTileState extends State<TaskTile> {
   Widget build(BuildContext context) {
     final User? user = auth.currentUser;
     final uid = user!.uid;
-    return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: Card(
-        margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
-        child: ListTile(
-          leading: IconButton(
-            icon: widget.task.checked 
-                ? Icon(Icons.check_box_outlined)
-                : Icon(Icons.check_box_outline_blank),
-            onPressed: () async{
-              await DatabaseService(uid: user.uid).updateTaskData(widget.task.id,widget.task.title, widget.task.text, widget.task.uid, !widget.task.checked );
-            }
+    if(widget.task.uid == uid){
+      return Padding(
+        padding: EdgeInsets.only(top: 10),
+        child: Card(
+          margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
+          child: ListTile(
+            leading: IconButton(
+              icon: widget.task.checked 
+                  ? Icon(Icons.check_box_outlined,color:Colors.green,)
+                  : Icon(Icons.check_box_outline_blank),
+              onPressed: () async{
+                await DatabaseService(uid: user.uid).updateTaskData(widget.task.id,widget.task.title, widget.task.text, widget.task.uid, !widget.task.checked );
+              }
+            ),
+            title: Text(widget.task.title),
+            subtitle: Text(widget.task.text),
+            trailing: IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () async{
+                //await DatabaseService(uid: user.uid).deleteTaskData(widget.task.id);
+              },
+            ),
           ),
-          title: Text(widget.task.title),
-          subtitle: Text(widget.task.text),
-          trailing: IconButton(
-            icon: Icon(Icons.delete),
-            color: Colors.redAccent,
-            onPressed: () async{
-              await DatabaseService(uid: user.uid).deleteTaskData(widget.task.id);
-            },
-          ),
-        ),
-      )
-    );
+        )
+      );
+    }
+    else return SizedBox(height: 0,width: 0,);
   }
 }
