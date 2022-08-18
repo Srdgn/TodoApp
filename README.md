@@ -1,2 +1,2 @@
 # TodoApp
- Mobile todo app with flutter
+ Mobile todo app with flutter and dart
