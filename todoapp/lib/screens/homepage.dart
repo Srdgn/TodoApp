@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:todoapp/models/task.dart';
 import 'package:uuid/uuid.dart';
 import "package:todoapp/home/navigationDrawer.dart";
-
+import 'package:todoapp/home/editTask.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
 class Homepage extends StatefulWidget {
 
   @override
@@ -17,7 +18,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final AuthService _auth = AuthService();
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<Task>>.value(
@@ -38,10 +39,14 @@ class _HomepageState extends State<Homepage> {
           body: TaskList(),
           floatingActionButton: FloatingActionButton(
             onPressed: ()async{
-              var uuid = Uuid();
+              var id = Uuid();
               final User? user = auth.currentUser;
               final uid = user!.uid;
-              await DatabaseService(uid: user.uid).updateTaskData(uuid.v1(),"Title","Text", user.uid, false);
+              //task = tasks.where((element) => element.id == uuid).first;
+              Task task = Task(id: id.v1(),title: "",text: "" ,uid: user.uid,checked: false);
+              await showModalBottomSheet(context: context,builder: (context){
+                return EditTask(task: task);
+              });              
             },
             child: Icon(Icons.add),
 
