@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/home/taskList.dart';
-import 'package:todoapp/screens/login.dart';
 import 'package:todoapp/service/auth.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:todoapp/service/database.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../home/userList.dart';
 import 'package:todoapp/models/task.dart';
-import 'package:todoapp/home/taskTile.dart';
-import 'package:todoapp/home/taskList.dart';
-import 'package:todoapp/service/database.dart';
-import 'package:todoapp/service/auth.dart';
 import 'package:uuid/uuid.dart';
 import "package:todoapp/home/navigationDrawer.dart";
 
@@ -22,7 +15,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  AuthService _auth = new AuthService();
+  final AuthService _auth = AuthService();
   final FirebaseAuth auth = FirebaseAuth.instance;
   
   @override
@@ -31,9 +24,12 @@ class _HomepageState extends State<Homepage> {
       initialData: [],
       value: DatabaseService().tasks,
       child: Scaffold(
+
           endDrawer: NavigationDrawerWidget(),
           appBar: AppBar(
-          title: Text('Tasks'),
+          title: Text(
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30) ,
+            'Tasks'),
           backgroundColor: Colors.blueAccent,
           elevation: 0.0,
           actions: <Widget>[

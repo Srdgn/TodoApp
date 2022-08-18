@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/home/editTask.dart';
 import 'package:todoapp/models/task.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +20,11 @@ class _TaskTileState extends State<TaskTile> {
   Widget build(BuildContext context) {
     final User? user = auth.currentUser;
     final uid = user!.uid;
+    void _showEditPanel(){
+      showModalBottomSheet(context: context,builder: (context){
+        return EditTask(task: widget.task);
+      });
+    }
     if(widget.task.uid == uid){
       return Padding(
         padding: EdgeInsets.only(top: 10),
@@ -37,12 +43,10 @@ class _TaskTileState extends State<TaskTile> {
             subtitle: Text(widget.task.text),
             trailing: IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () async{
-                //await DatabaseService(uid: user.uid).deleteTaskData(widget.task.id);
-              },
+              onPressed: () => _showEditPanel(),
+              ),
             ),
           ),
-        )
       );
     }
     else return SizedBox(height: 0,width: 0,);

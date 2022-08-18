@@ -16,6 +16,12 @@ class NavigationDrawerWidget extends StatelessWidget {
           children: <Widget>[
             SizedBox(height: 50,),
             buildMenuItem(
+              text: "Settings",
+              icon: Icons.settings_rounded,
+              //ontap:
+              ),
+            SizedBox(height: 10,),
+            buildMenuItem(
               text: "Logout",
               icon: Icons.logout_rounded,
               ontap:() async {
@@ -25,7 +31,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                   MaterialPageRoute(builder: (context) =>  LoginPage()),
                   );
               },
-            )
+            ),
           ],
           ),
         ),
