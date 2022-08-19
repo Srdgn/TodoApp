@@ -19,8 +19,8 @@ class _EditTaskState extends State<EditTask> {
     String text = task.text;
     String title = task.title;
     final FirebaseAuth auth = FirebaseAuth.instance;
-      final User? user = auth.currentUser;
-      final uid = user!.uid;
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
     Future<void> _showDelete(){
       
       return showDialog<void>(
@@ -48,8 +48,8 @@ class _EditTaskState extends State<EditTask> {
                   RaisedButton.icon(
                   color: Colors.blueGrey,
                   onPressed: (){Navigator.pop(context);},
-                  icon: Icon(Icons.cancel,color: Colors.white,),
-                  label: Text("Cancel",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                  icon:  Icon(Icons.cancel,color: Colors.white,),
+                  label:  Text("Cancel",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -76,13 +76,12 @@ class _EditTaskState extends State<EditTask> {
             TextFormField(
               initialValue: title,
               decoration: InputDecoration(
-                prefixStyle: TextStyle(fontWeight: FontWeight.bold),
-                prefix: Text(
+                prefixIcon: Padding(padding: EdgeInsets.symmetric(horizontal:15, vertical: 8), child: Text(
                   "Title: ",
                   style: TextStyle(fontSize:18 ,fontWeight: FontWeight.bold),
-                ),
-                hintText: text,
-                contentPadding: EdgeInsets.all(12.0),
+                ),),
+                hintText: "Title",
+                contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
                 onChanged: (title) => DatabaseService(uid: user.uid).updateTaskData(widget.task.id,title, widget.task.text, widget.task.uid, widget.task.checked ),
             ),
@@ -90,13 +89,13 @@ class _EditTaskState extends State<EditTask> {
             TextFormField(
               initialValue: text,
               decoration: InputDecoration(
-                prefixStyle: TextStyle(fontWeight: FontWeight.bold),
-                prefix: Text(
+                prefixIcon: Padding(padding: EdgeInsets.symmetric(horizontal:15, vertical: 8), child: Text(
                   "Text: ",
                   style: TextStyle(fontSize:18 ,fontWeight: FontWeight.bold),
-                ),
-                hintText: text,
-                contentPadding: EdgeInsets.all(12.0),
+                ),),
+                
+                hintText: "Text",
+                contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
               onChanged: (text) => DatabaseService(uid: user.uid).updateTaskData(widget.task.id,widget.task.title, text, widget.task.uid, widget.task.checked ),
             ),
@@ -110,13 +109,17 @@ class _EditTaskState extends State<EditTask> {
               label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
             SizedBox(height: 10,),
-              RaisedButton.icon(
+            /* RaisedButton.icon(
               color: Colors.blueGrey,
-              onPressed: (){Navigator.pop(context);},
+              onPressed: (){
+                print("cancel");
+                print(initialTitle);
+                DatabaseService(uid: user.uid).updateTaskData(widget.task.id,initialTitle,initialText, widget.task.uid,widget.task.checked );
+                Navigator.pop(context);},
               icon: Icon(Icons.cancel,color: Colors.white,),
               label: Text("Cancel",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: 10,),
+              ), */
+            SizedBox(height: 10,),
             
           ],
         ),

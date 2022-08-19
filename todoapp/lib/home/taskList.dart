@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:cloud_firestore/cloud_firestore.dart";
 import "package:provider/provider.dart";
 import 'package:todoapp/models/task.dart';
 import 'package:todoapp/home/taskTile.dart';
@@ -18,13 +17,16 @@ class _TaskListState extends State<TaskList> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user!.uid;
-    return ListView.builder(
-      itemCount: tasks.length,
-      itemBuilder: (context , index){
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 60),
+      child: ListView.builder(
+        itemCount: tasks.length,
+        itemBuilder: (context , index){
 
-        return TaskTile(task: tasks[index]);
+          return TaskTile(task: tasks[index]);
 
-      },
-      );
+        },
+        ),
+    );
   }
 }

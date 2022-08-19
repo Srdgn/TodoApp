@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/screens/homepage.dart';
 import 'package:todoapp/service/auth.dart';
 import 'package:todoapp/screens/login.dart';
+import 'package:todoapp/screens/projectsPage.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   AuthService _auth = new AuthService();
@@ -15,6 +17,33 @@ class NavigationDrawerWidget extends StatelessWidget {
           padding: padding,
           children: <Widget>[
             SizedBox(height: 50,),
+            
+            buildMenuItem(
+              text: "Projects",
+              icon: Icons.folder_copy_rounded,
+              ontap:() async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  ProjectsPage()),
+                  );
+              },
+            ),
+            buildMenuItem(
+              text: "Tasks",
+              icon: Icons.task_rounded,
+              ontap:() async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  Homepage()),
+                  );
+              },
+            ),
+            buildMenuItem(
+              text: "Users",
+              icon: Icons.person_rounded,
+              ontap:() async {
+              },
+            ),
             buildMenuItem(
               text: "Settings",
               icon: Icons.settings_rounded,
