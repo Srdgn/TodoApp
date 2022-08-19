@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:todoapp/service/database.dart';
 import 'package:todoapp/models/user.dart';
-import 'package:todoapp/models/task.dart';
 
 class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -15,7 +14,7 @@ class AuthService{
     return user != null ? MyUser(uid: user.uid) : null;
   }
 
-  Stream<MyUser> get user{
+  Stream<MyUser?> get user{
     return _auth.authStateChanges()
       .map((User? user)=>_userFromFirebaseUser(user!)!);
   }

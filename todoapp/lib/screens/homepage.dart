@@ -8,7 +8,7 @@ import 'package:todoapp/models/task.dart';
 import 'package:uuid/uuid.dart';
 import "package:todoapp/home/navigationDrawer.dart";
 import 'package:todoapp/home/editTask.dart';
-import "package:cloud_firestore/cloud_firestore.dart";
+
 class Homepage extends StatefulWidget {
 
   @override
@@ -37,20 +37,19 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
           body: TaskList(),
+          floatingActionButtonLocation: 
+            FloatingActionButtonLocation.miniCenterDocked,
           floatingActionButton: FloatingActionButton(
             onPressed: ()async{
               var id = Uuid();
               final User? user = auth.currentUser;
               final uid = user!.uid;
-              //task = tasks.where((element) => element.id == uuid).first;
               Task task = Task(id: id.v1(),title: "",text: "" ,uid: user.uid,checked: false);
               await showModalBottomSheet(context: context,builder: (context){
                 return EditTask(task: task);
               });              
             },
             child: Icon(Icons.add),
-
-
             ),
           ),
     );

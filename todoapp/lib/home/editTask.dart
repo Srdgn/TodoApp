@@ -109,13 +109,17 @@ class _EditTaskState extends State<EditTask> {
               label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
             SizedBox(height: 10,),
-              RaisedButton.icon(
+            /* RaisedButton.icon(
               color: Colors.blueGrey,
-              onPressed: (){Navigator.pop(context);},
+              onPressed: (){
+                print("cancel");
+                print(initialTitle);
+                DatabaseService(uid: user.uid).updateTaskData(widget.task.id,initialTitle,initialText, widget.task.uid,widget.task.checked );
+                Navigator.pop(context);},
               icon: Icon(Icons.cancel,color: Colors.white,),
               label: Text("Cancel",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: 10,),
+              ), */
+            SizedBox(height: 10,),
             
           ],
         ),

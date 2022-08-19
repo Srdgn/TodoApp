@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/home/editTask.dart';
 import 'package:todoapp/models/task.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todoapp/service/database.dart';
 
@@ -31,6 +30,7 @@ class _TaskTileState extends State<TaskTile> {
         child: Card(
           margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
           child: ListTile(
+            
             leading: IconButton(
               icon: widget.task.checked 
                   ? Icon(Icons.check_box_outlined,color:Colors.green,)
