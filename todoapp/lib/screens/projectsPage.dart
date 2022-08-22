@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/service/database.dart';
 import 'package:provider/provider.dart';
-import 'package:todoapp/models/task.dart';
 import "package:todoapp/home/navigationDrawer.dart";
 import 'package:todoapp/projectsPage/projectList.dart';
 import 'package:todoapp/models/project.dart';
@@ -46,14 +45,13 @@ class _ProjectsPageState extends State<ProjectsPage> {
               final User? user = auth.currentUser;
               final uid = user!.uid;
               final CollectionReference tasksCollection = FirebaseFirestore.instance.collection("projects").doc(id).collection("tasks");
+              
               List<String> user_ids = [];
               List<String> admin_ids = [];
               user_ids.add(uid);
               admin_ids.add(uid);
-              print(user_ids[0]); 
-
-              Project project = Project(id: id,title: "Title" ,text: "Text",user_ids: user_ids,tasks: tasksCollection ,admin_ids: admin_ids);
-              DatabaseService(uid: uid).updateProjectData( id, "Title" , "Text", user_ids,tasksCollection ,admin_ids);
+              print(tasksCollection); 
+              DatabaseService(uid: uid).updateProjectData( id, "Title" , "Text", user_ids,/*tasksCollection,*/ admin_ids);
             },
             child: Icon(Icons.add),
             ),

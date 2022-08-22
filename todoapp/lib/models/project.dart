@@ -7,9 +7,8 @@ class Project{
   final String title;
   final String text;
   List<String> user_ids = <String>[] ;
-  final CollectionReference tasks;
+  //final CollectionReference tasks;
   List<String> admin_ids = <String>[];
-  Project({required this.id,required this.title,required this.text,required user_ids,required  this.tasks, required admin_ids});
+  Project({required this.id,required this.title,required this.text,required user_ids,/*required  this.tasks,*/ required admin_ids});
 
-  
 }

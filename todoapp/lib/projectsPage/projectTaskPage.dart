@@ -44,7 +44,7 @@ class _ProjectTaskPageState extends State<ProjectTaskPage> {
   
   @override
    Widget build(BuildContext context) {
-    CollectionReference tasks = widget.project.tasks;
+    CollectionReference tasks = FirebaseFirestore.instance.collection("projects").doc(widget.project.id).collection("tasks");;
     final Stream<List<Task>> tasksStream = projectTasks(tasks.snapshots());
     return StreamProvider<List<Task>>.value(
       initialData: [],

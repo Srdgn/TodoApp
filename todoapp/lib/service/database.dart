@@ -70,26 +70,26 @@ class DatabaseService{
   //                PROJECTS
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc){
-      final CollectionReference tasksCollection = FirebaseFirestore.instance.collection("projects").doc(doc.id).collection("tasks");
+      //final CollectionReference tasksCollection = FirebaseFirestore.instance.collection("projects").doc(doc.id).collection("tasks");
       return Project(
         id: doc.id,
         title: doc.get("title") ?? "",
         text: doc.get("text") ?? "",
         user_ids: doc.get("user_ids") ?? <String>[],    
-        tasks: tasksCollection,                     
+        //tasks: tasksCollection,                     
         admin_ids: doc.get("admin_ids") ?? <String>[],
         
 
         );
     }).toList();
   }
-  Future updateProjectData(String id,String title, String text, List<String> user_ids,CollectionReference tasks, List<String> admin_ids)async{
-    return await taskCollection.doc(id).set({
+  Future updateProjectData(String id,String title, String text, List<String> user_ids,/*CollectionReference tasks,*/ List<String> admin_ids)async{
+    return await projectCollection.doc(id).set({
       "id": id,
       "title": title,
       "text": text,
       "user_ids": user_ids,
-      "tasks": tasks,
+      //"tasks": tasks,
       "admin_ids": admin_ids
     });
   }
