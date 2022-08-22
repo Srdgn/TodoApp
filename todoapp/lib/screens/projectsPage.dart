@@ -26,7 +26,6 @@ class _ProjectsPageState extends State<ProjectsPage> {
       initialData: [],
       value: DatabaseService().projects,
       child: Scaffold(
-
           endDrawer: NavigationDrawerWidget(),
           appBar: AppBar(
           title: Text(
@@ -38,7 +37,28 @@ class _ProjectsPageState extends State<ProjectsPage> {
           ],
         ),
           body: ProjectList(),
+          floatingActionButtonLocation: 
+            FloatingActionButtonLocation.miniCenterDocked,
+          floatingActionButton: FloatingActionButton(
+            onPressed: ()async{
+              print("bass");
+              String id = Uuid().v1();
+              final User? user = auth.currentUser;
+              final uid = user!.uid;
+              final CollectionReference tasksCollection = FirebaseFirestore.instance.collection("projects").doc(id).collection("tasks");
+              List<String> user_ids = [];
+              List<String> admin_ids = [];
+              user_ids.add(uid);
+              admin_ids.add(uid);
+              print(user_ids[0]); 
+
+              Project project = Project(id: id,title: "Title" ,text: "Text",user_ids: user_ids,tasks: tasksCollection ,admin_ids: admin_ids);
+              DatabaseService(uid: uid).updateProjectData( id, "Title" , "Text", user_ids,tasksCollection ,admin_ids);
+            },
+            child: Icon(Icons.add),
+            ),
         ),
+        
         
     );
   }

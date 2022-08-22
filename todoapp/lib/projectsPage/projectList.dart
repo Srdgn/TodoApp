@@ -17,7 +17,9 @@ class _ProjectListState extends State<ProjectList> {
           
     return Padding(
       padding: const EdgeInsets.only(bottom: 60),
+      
       child: ListView.builder(
+        
         itemCount: projects.length,
         itemBuilder: (context , index){
           

@@ -97,4 +97,5 @@ class DatabaseService{
     return projectCollection.snapshots()
     .map(_projectListFromSnapshot);
   }
+  
 }

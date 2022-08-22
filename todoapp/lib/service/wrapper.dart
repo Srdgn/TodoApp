@@ -1,8 +1,8 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import "package:todoapp/screens/login.dart";
-import "package:todoapp/screens/homepage.dart";
 import 'package:todoapp/models/user.dart';
+import 'package:todoapp/screens/projectsPage.dart';
 
 
 class Wrapper extends StatelessWidget {
@@ -16,7 +16,7 @@ class Wrapper extends StatelessWidget {
       return LoginPage();
     }
     else {
-      return Homepage();
+      return ProjectsPage();
     }
     
   }
