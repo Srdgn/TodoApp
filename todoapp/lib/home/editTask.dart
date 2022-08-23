@@ -3,10 +3,10 @@ import 'package:todoapp/models/task.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todoapp/service/database.dart';
 
-
 class EditTask extends StatefulWidget {
   Task task;
-  EditTask({required this.task});
+  bool projectTask;
+  EditTask({required this.task, required this.projectTask});
   @override
   State<EditTask> createState() => _EditTaskState();
 }
@@ -38,8 +38,13 @@ class _EditTaskState extends State<EditTask> {
                       onPressed: ()async{
                         Navigator.pop(context);
                         Navigator.pop(context);
+                        if(widget.projectTask){
+                          print("delete");
+                          await DatabaseService(uid: user.uid).deleteProjectTaskData(widget.task.id,widget.task.project_id);
+                        }
+                        else{
                         await DatabaseService(uid: user.uid).deleteTaskData(widget.task.id);
-                        
+                        }
                       },
                       icon: Icon(Icons.delete,color: Colors.white,),
                       label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
@@ -83,7 +88,14 @@ class _EditTaskState extends State<EditTask> {
                 hintText: "Title",
                 contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
-                onChanged: (title) => DatabaseService(uid: user.uid).updateTaskData(widget.task.id,title, widget.task.text, widget.task.uid, widget.task.checked ),
+                onChanged: (title) => {
+                if(widget.projectTask){
+                  DatabaseService(uid: user.uid).updateProjectTaskData(widget.task.id, title, widget.task.text, widget.task.uid, widget.task.checked,widget.task.project_id)
+                }
+                else{
+                  DatabaseService(uid: user.uid).updateTaskData(widget.task.id,title, widget.task.text, widget.task.uid, widget.task.checked)
+                }
+                }
             ),
             SizedBox(height: 20,),
             TextFormField(
@@ -97,7 +109,14 @@ class _EditTaskState extends State<EditTask> {
                 hintText: "Text",
                 contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
-              onChanged: (text) => DatabaseService(uid: user.uid).updateTaskData(widget.task.id,widget.task.title, text, widget.task.uid, widget.task.checked ),
+              onChanged: (text) => {
+                if(widget.projectTask){
+                  DatabaseService(uid: user.uid).updateProjectTaskData(widget.task.id,widget.task.title, text, widget.task.uid, widget.task.checked,widget.task.project_id)
+                }
+                else{
+                  DatabaseService(uid: user.uid).updateTaskData(widget.task.id,widget.task.title, text, widget.task.uid, widget.task.checked)
+                },
+                },
             ),
             SizedBox(height: 40,),
             RaisedButton.icon(
@@ -109,7 +128,7 @@ class _EditTaskState extends State<EditTask> {
               label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
             SizedBox(height: 10,),
-            /* RaisedButton.icon(
+            /* RaisedButton.icon(        //Cancel button
               color: Colors.blueGrey,
               onPressed: (){
                 print("cancel");
