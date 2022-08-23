@@ -21,7 +21,7 @@ class _ProjectTaskTileState extends State<ProjectTaskTile> {
     final uid = user!.uid;
     void _showEditPanel(){
       showModalBottomSheet(context: context,builder: (context){
-        return EditTask(task: widget.task);
+        return EditTask(task: widget.task, projectTask: true,);
       });
     }
     if(widget.task.uid == uid){
@@ -36,7 +36,7 @@ class _ProjectTaskTileState extends State<ProjectTaskTile> {
                   ? Icon(Icons.check_box_outlined,color:Colors.green,)
                   : Icon(Icons.check_box_outline_blank),
               onPressed: () async{
-                await DatabaseService(uid: user.uid).updateTaskData(widget.task.id,widget.task.title, widget.task.text, widget.task.uid, !widget.task.checked );
+                await DatabaseService(uid: user.uid).updateProjectTaskData(widget.task.id,widget.task.title, widget.task.text, widget.task.uid, !widget.task.checked, widget.task.project_id );
               }
             ),
             title: Text(widget.task.title),
@@ -44,8 +44,8 @@ class _ProjectTaskTileState extends State<ProjectTaskTile> {
             trailing: IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _showEditPanel(),
-              ),
-            ),
+              ),          
+            ),   
           ),
       );
     }

@@ -40,12 +40,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
             FloatingActionButtonLocation.miniCenterDocked,
           floatingActionButton: FloatingActionButton(
             onPressed: ()async{
-              print("bass");
               String id = Uuid().v1();
               final User? user = auth.currentUser;
               final uid = user!.uid;
               final CollectionReference tasksCollection = FirebaseFirestore.instance.collection("projects").doc(id).collection("tasks");
-              
               List<String> user_ids = [];
               List<String> admin_ids = [];
               user_ids.add(uid);

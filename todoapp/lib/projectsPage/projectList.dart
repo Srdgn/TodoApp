@@ -22,7 +22,6 @@ class _ProjectListState extends State<ProjectList> {
         
         itemCount: projects.length,
         itemBuilder: (context , index){
-          
           return ProjectTile(project: projects[index]);
           
         },

@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:todoapp/models/task.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todoapp/service/database.dart';
+import 'package:todoapp/models/project.dart';
 
-class EditTask extends StatefulWidget {
-  Task task;
-  bool projectTask;
-  EditTask({required this.task, required this.projectTask});
+class EditProject extends StatefulWidget {
+  Project project;
+  EditProject({required this.project});
   @override
-  State<EditTask> createState() => _EditTaskState();
+  State<EditProject> createState() => _EditProjectState();
 }
 
-class _EditTaskState extends State<EditTask> {
+class _EditProjectState extends State<EditProject> {
   
   @override
   Widget build(BuildContext context) {
-    Task task = widget.task;
-    String text = task.text;
-    String title = task.title;
+    Project project = widget.project;
+    String text = project.text;
+    String title = project.title;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user!.uid;
-    Future<void> _showDelete(){
-      
+
+    Future<void> _showDelete(){  
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -38,13 +38,8 @@ class _EditTaskState extends State<EditTask> {
                       onPressed: ()async{
                         Navigator.pop(context);
                         Navigator.pop(context);
-                        if(widget.projectTask){
-                          print("delete");
-                          await DatabaseService(uid: user.uid).deleteProjectTaskData(widget.task.id,widget.task.project_id);
-                        }
-                        else{
-                        await DatabaseService(uid: user.uid).deleteTaskData(widget.task.id);
-                        }
+                        
+                        await DatabaseService(uid: user.uid).deleteProjectData(project.id);
                       },
                       icon: Icon(Icons.delete,color: Colors.white,),
                       label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
@@ -88,14 +83,8 @@ class _EditTaskState extends State<EditTask> {
                 hintText: "Title",
                 contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
-                onChanged: (title) => {
-                if(widget.projectTask){
-                  DatabaseService(uid: user.uid).updateProjectTaskData(widget.task.id, title, widget.task.text, widget.task.uid, widget.task.checked,widget.task.project_id)
-                }
-                else{
-                  DatabaseService(uid: user.uid).updateTaskData(widget.task.id,title, widget.task.text, widget.task.uid, widget.task.checked)
-                }
-                }
+                onChanged: (title) => DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, project.user_ids,/*CollectionReference tasks,*/  project.admin_ids)
+
             ),
             SizedBox(height: 20,),
             TextFormField(
@@ -109,14 +98,8 @@ class _EditTaskState extends State<EditTask> {
                 hintText: "Text",
                 contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
-              onChanged: (text) => {
-                if(widget.projectTask){
-                  DatabaseService(uid: user.uid).updateProjectTaskData(widget.task.id,widget.task.title, text, widget.task.uid, widget.task.checked,widget.task.project_id)
-                }
-                else{
-                  DatabaseService(uid: user.uid).updateTaskData(widget.task.id,widget.task.title, text, widget.task.uid, widget.task.checked)
-                },
-                },
+                onChanged: (text) => DatabaseService(uid: user.uid).updateProjectData( project.id, project.title, text, project.user_ids,/*CollectionReference tasks,*/  project.admin_ids)
+
             ),
             SizedBox(height: 40,),
             RaisedButton.icon(

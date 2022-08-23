@@ -45,9 +45,9 @@ class _HomepageState extends State<Homepage> {
               var id = Uuid();
               final User? user = auth.currentUser;
               final uid = user!.uid;
-              Task task = Task(id: id.v1(),title: "",text: "" ,uid: user.uid,checked: false);
+              Task task = Task(id: id.v1(),project_id: "", title: "",text: "" ,uid: user.uid,checked: false);
               await showModalBottomSheet(context: context,builder: (context){
-                return EditTask(task: task);
+                return EditTask(task: task, projectTask: false,);
               });              
             },
             child: Icon(Icons.add),

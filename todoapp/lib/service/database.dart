@@ -52,6 +52,7 @@ class DatabaseService{
     return snapshot.docs.map((doc){
       return Task(
         id: doc.id,
+        project_id: "",
         title: doc.get("title") ?? "",
         text: doc.get("text") ?? "",
         uid: doc.get("uid") ?? "",
@@ -70,25 +71,23 @@ class DatabaseService{
   //                PROJECTS
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc){
-      //final CollectionReference tasksCollection = FirebaseFirestore.instance.collection("projects").doc(doc.id).collection("tasks");
       return Project(
         id: doc.id,
         title: doc.get("title") ?? "",
         text: doc.get("text") ?? "",
-        user_ids: doc.get("user_ids") ?? <String>[],    
+        user_ids: doc.get("user_ids") ?? <String>[],
         //tasks: tasksCollection,                     
-        admin_ids: doc.get("admin_ids") ?? <String>[],
-        
-
+        admin_ids: doc.get("admin_ids")?? <String>[],
         );
     }).toList();
   }
+
   Future updateProjectData(String id,String title, String text, List<String> user_ids,/*CollectionReference tasks,*/ List<String> admin_ids)async{
     return await projectCollection.doc(id).set({
       "id": id,
       "title": title,
       "text": text,
-      "user_ids": user_ids,
+      "user_ids": user_ids,  
       //"tasks": tasks,
       "admin_ids": admin_ids
     });
@@ -97,5 +96,26 @@ class DatabaseService{
     return projectCollection.snapshots()
     .map(_projectListFromSnapshot);
   }
+  Future deleteProjectData(String id, )async{
+
+    return await projectCollection.doc(id).delete();
+  }
   
+  //            PROJECT TASKS
+
+
+  Future updateProjectTaskData(String id,String title, String text, String uid_task , bool checked, String project_id)async{
+    return await projectCollection.doc(project_id).collection("tasks").doc(id).set({
+      "id": id,
+      "project_id": project_id,
+      "title": title,
+      "text": text,
+      "uid": uid_task,
+      "checked": checked,
+    });
+  }
+  Future deleteProjectTaskData(String id, String project_id)async{
+
+    return await projectCollection.doc(project_id).collection("task").doc(id).delete();
+  }
 }

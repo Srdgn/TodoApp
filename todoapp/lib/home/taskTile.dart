@@ -21,7 +21,7 @@ class _TaskTileState extends State<TaskTile> {
     final uid = user!.uid;
     void _showEditPanel(){
       showModalBottomSheet(context: context,builder: (context){
-        return EditTask(task: widget.task);
+        return EditTask(task: widget.task, projectTask: false,);
       });
     }
     if(widget.task.uid == uid){
