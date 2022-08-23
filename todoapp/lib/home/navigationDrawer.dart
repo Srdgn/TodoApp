@@ -3,6 +3,7 @@ import 'package:todoapp/screens/homepage.dart';
 import 'package:todoapp/service/auth.dart';
 import 'package:todoapp/screens/login.dart';
 import 'package:todoapp/screens/projectsPage.dart';
+import "package:todoapp/screens/usersPage.dart";
 
 class NavigationDrawerWidget extends StatelessWidget {
   AuthService _auth = new AuthService();
@@ -42,6 +43,10 @@ class NavigationDrawerWidget extends StatelessWidget {
               text: "Users",
               icon: Icons.person_rounded,
               ontap:() async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UsersPage()),
+                  );
               },
             ),
             buildMenuItem(

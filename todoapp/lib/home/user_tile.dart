@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/models/user2.dart';
+import 'package:todoapp/screens/usersPage.dart';
 
 class UserTile extends StatelessWidget {
   final User2 user;
   UserTile({required this.user});
   
-
+  
   @override
   Widget build(BuildContext context) {
+    UsersPage.users_names.add(user.name);
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Card(
@@ -32,16 +34,19 @@ class _ButtonWithIconState extends State<ButtonWithIcon> {
   @override
   bool checked = false;
   Widget build(BuildContext context) {
-    return IconButton(
-            icon: checked 
-                ? Icon(Icons.check_box_outlined)
-                : Icon(Icons.check_box_outline_blank),
-            onPressed: () {
-              setState((){
-                checked = !checked;
-              });
-            },
-          );
+    return Ink(
+          height: 40,
+          width: 40,
+          decoration: const ShapeDecoration(
+            color: Colors.lightBlue,
+            shape: CircleBorder( ),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.person),
+            color: Colors.white,
+            onPressed: () {  },   // see profile 
+         ),
+        );
   }
 }
 

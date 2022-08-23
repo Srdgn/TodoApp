@@ -32,10 +32,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
             'Projects'),
           backgroundColor: Colors.blueAccent,
           elevation: 0.0,
-          actions: <Widget>[
-          ],
+          
         ),
-          body: ProjectList(),
+          body:  ProjectList(),
           floatingActionButtonLocation: 
             FloatingActionButtonLocation.miniCenterDocked,
           floatingActionButton: FloatingActionButton(
@@ -61,3 +60,6 @@ class _ProjectsPageState extends State<ProjectsPage> {
     );
   }
 }
+
+
+
