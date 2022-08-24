@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: InputDecoration(
                         labelText: "Name",
                         hintText: "Enter Name",
-                        prefixIcon: Icon(Icons.email_outlined),
+                        prefixIcon: Icon(Icons.text_fields_rounded),
                         border: OutlineInputBorder(),
                        ),
                        onChanged: (String value){
@@ -135,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                             if(result == null){
                             setState(() {
-                              error = "Kayıt İşlemi Başarısız";
+                              error = "Unsuccessful";
                             });
                             }   
                             else{
@@ -147,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           }
                           
                           else{  // aynı olmamalı uyarı
-                            error = "Şifreler Eşleşmiyor";
+                            error = "Passwords are not matching";
                           }
                         },
                         child: Text("Sign Up",style: TextStyle(fontSize: 20),),
@@ -156,7 +156,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     SizedBox(height: 20,),
 
-                    Text("Zaten hesabınız var mı? Giriş yapın!"),
+                    Text("Already have an account? Login!"),
 
                     MaterialButton(
 

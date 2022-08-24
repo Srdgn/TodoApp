@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                           dynamic result = await _auth.signIn(mailController.text, passwordController.text);
                           if(result == null){
                             setState(() {
-                              error = "Giriş İşlemi Başarısız";
+                              error = "Unsuccessful login";
                             });
                           }
                           else{
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     SizedBox(height: 20,),
 
-                    Text("Hesabınız yok mu? Hemen kayıt olun!"),
+                    Text("Dont't have an account? SignUp now!"),
 
                     MaterialButton(
 

@@ -50,7 +50,6 @@ class _ProjectsPageState extends State<ProjectsPage> {
               admin_ids.add(uid);
               print(tasksCollection); 
               DatabaseService(uid: uid).updateProjectData( id, "Title" , "Text", user_ids,/*tasksCollection,*/ admin_ids);
-                        setState((){});
 
             },
             child: Icon(Icons.add),

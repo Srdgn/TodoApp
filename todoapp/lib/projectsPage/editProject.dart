@@ -3,6 +3,8 @@ import 'package:todoapp/models/task.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todoapp/service/database.dart';
 import 'package:todoapp/models/project.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EditProject extends StatefulWidget {
   Project project;
@@ -21,7 +23,9 @@ class _EditProjectState extends State<EditProject> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user!.uid;
+    List<String> uid_list = [];
 
+   
     Future<void> _showDelete(){  
       return showDialog<void>(
         context: context,
@@ -83,8 +87,12 @@ class _EditProjectState extends State<EditProject> {
                 hintText: "Title",
                 contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
-                onChanged: (title) => DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, project.user_ids,/*CollectionReference tasks,*/  project.admin_ids)
-
+                onChanged: (title) { 
+                  FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
+                  setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
+                });
+                  DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, uid_list,/*CollectionReference tasks,*/  project.admin_ids);
+                }
             ),
             SizedBox(height: 20,),
             TextFormField(
@@ -98,8 +106,12 @@ class _EditProjectState extends State<EditProject> {
                 hintText: "Text",
                 contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
-                onChanged: (text) => DatabaseService(uid: user.uid).updateProjectData( project.id, project.title, text, project.user_ids,/*CollectionReference tasks,*/  project.admin_ids)
-
+                onChanged: (text) { 
+                  FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
+                  setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
+                });
+                  DatabaseService(uid: user.uid).updateProjectData( project.id, project.title, text, uid_list,/*CollectionReference tasks,*/  project.admin_ids);
+                }
             ),
             SizedBox(height: 40,),
             RaisedButton.icon(

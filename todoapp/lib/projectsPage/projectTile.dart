@@ -22,7 +22,8 @@ class _ProjectTileState extends State<ProjectTile> {
         return EditProject(project: widget.project);
       });
     }
-
+  
+  
   @override
   Widget build(BuildContext context) {
 
@@ -31,8 +32,6 @@ class _ProjectTileState extends State<ProjectTile> {
     
     FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
       setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
-      
-
     });
     if(uid_list.contains(uid.toString())){
       return Padding(
