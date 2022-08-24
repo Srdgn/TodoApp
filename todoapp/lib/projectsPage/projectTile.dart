@@ -16,7 +16,7 @@ class ProjectTile extends StatefulWidget {
 class _ProjectTileState extends State<ProjectTile> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   List<dynamic> uid_list = [];
-
+  List<dynamic> admin_list = [];
   void _showEditPanel(){
       showModalBottomSheet(context: context,builder: (context){
         return EditProject(project: widget.project);
@@ -32,6 +32,8 @@ class _ProjectTileState extends State<ProjectTile> {
     
     FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
       setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
+      setState(() { admin_list= List.from(documentSnapshot["admin_ids"]); });
+
     });
     if(uid_list.contains(uid.toString())){
       return Padding(
@@ -48,10 +50,11 @@ class _ProjectTileState extends State<ProjectTile> {
           child: ListTile(
             title: Text(widget.project.title),
             subtitle: Text(widget.project.text),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _showEditPanel(),  
-            ),
+            trailing: (admin_list.contains(uid))
+              ?IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => _showEditPanel(),)
+              : null,
             ),
           ),
         ), 

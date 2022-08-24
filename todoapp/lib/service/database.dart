@@ -26,7 +26,9 @@ class DatabaseService{
   List<User2> _userListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc){
       return User2(
+        id: doc.get("id") ?? "",
         name: doc.get("name") ?? "",
+        project_ids: doc.get("project_ids") ?? <String>[],
         );
     }).toList();
   }
@@ -82,14 +84,16 @@ class DatabaseService{
     }).toList();
   }
 
-  Future updateProjectData(String id,String title, String text, List<String> user_ids,/*CollectionReference tasks,*/ List<String> admin_ids)async{
+  Future updateProjectData(String id,String title, String text, List<dynamic> user_ids,/*CollectionReference tasks,*/ List<dynamic> admin_ids)async{
+    print(user_ids);
+    print(admin_ids);
     return await projectCollection.doc(id).set({
       "id": id,
       "title": title,
       "text": text,
-      "user_ids": user_ids,  
+      "user_ids":  FieldValue.arrayUnion(user_ids),  
       //"tasks": tasks,
-      "admin_ids": admin_ids
+      "admin_ids": FieldValue.arrayUnion(admin_ids),  
     });
   }
   Stream<List<Project>> get projects{

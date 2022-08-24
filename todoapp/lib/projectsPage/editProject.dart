@@ -14,7 +14,8 @@ class EditProject extends StatefulWidget {
 }
 
 class _EditProjectState extends State<EditProject> {
-  
+  List<dynamic> uid_list = [];    
+  List<dynamic> admin_list = [];
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
@@ -23,7 +24,8 @@ class _EditProjectState extends State<EditProject> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user!.uid;
-    List<String> uid_list = [];
+    
+
 
    
     Future<void> _showDelete(){  
@@ -88,11 +90,12 @@ class _EditProjectState extends State<EditProject> {
                 contentPadding: EdgeInsets.symmetric(horizontal:15, vertical: 8),
                 ),
                 onChanged: (title) { 
+
                   FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
-                  setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
-                });
-                print(uid_list);
-                  DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, [uid],/*CollectionReference tasks,*/  project.admin_ids);
+                    setState(() { admin_list= List.from(documentSnapshot["admin_ids"]); });
+                    setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
+                    DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, uid_list,/*CollectionReference tasks,*/  admin_list);
+                  });
                 }
             ),
             SizedBox(height: 20,),
@@ -109,9 +112,10 @@ class _EditProjectState extends State<EditProject> {
                 ),
                 onChanged: (text) { 
                   FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
-                  setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
-                });
-                  DatabaseService(uid: user.uid).updateProjectData( project.id, project.title, text, [uid],/*CollectionReference tasks,*/  project.admin_ids);
+                    setState(() { admin_list= List.from(documentSnapshot["admin_ids"]); });
+                    setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
+                    DatabaseService(uid: user.uid).updateProjectData( project.id, project.title,text, uid_list,/*CollectionReference tasks,*/  admin_list);
+                  });
                 }
             ),
             SizedBox(height: 40,),
@@ -124,17 +128,8 @@ class _EditProjectState extends State<EditProject> {
               label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
             SizedBox(height: 10,),
-            /* RaisedButton.icon(        //Cancel button
-              color: Colors.blueGrey,
-              onPressed: (){
-                print("cancel");
-                print(initialTitle);
-                DatabaseService(uid: user.uid).updateTaskData(widget.task.id,initialTitle,initialText, widget.task.uid,widget.task.checked );
-                Navigator.pop(context);},
-              icon: Icon(Icons.cancel,color: Colors.white,),
-              label: Text("Cancel",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-              ), */
-            SizedBox(height: 10,),
+
+
             
           ],
         ),

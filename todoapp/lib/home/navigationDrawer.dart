@@ -11,6 +11,41 @@ class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 30);
   @override
   Widget build(BuildContext context) {
+
+
+    Future<void> _showSettings(){
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Settings',style: TextStyle(fontWeight: FontWeight.bold)),
+            actions: <Widget>[
+              Row(
+                children: [
+                 
+                  SizedBox(height: 100,),
+                    IconButton(
+                      
+                      alignment:Alignment.bottomCenter,
+                      color: Colors.red,
+                      icon: Icon(Icons.close_rounded),
+                      
+                      onPressed: ()async{
+                        Navigator.pop(context);
+                      },
+                  ),
+                  
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+
+
     return Drawer(
       child: Material(
         color: Colors.lightBlue[200],
@@ -52,7 +87,8 @@ class NavigationDrawerWidget extends StatelessWidget {
             buildMenuItem(
               text: "Settings",
               icon: Icons.settings_rounded,
-              //ontap:
+              ontap: () {Navigator.pop(context);
+               _showSettings();}
               ),
             SizedBox(height: 10,),
             buildMenuItem(
@@ -85,3 +121,6 @@ Widget buildMenuItem({
       onTap: ontap,
     );
   }
+
+
+  
