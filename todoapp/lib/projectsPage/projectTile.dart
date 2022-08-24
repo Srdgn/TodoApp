@@ -2,25 +2,39 @@ import 'package:todoapp/models/project.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:todoapp/projectsPage/projectTaskPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'editProject.dart';
 
 class ProjectTile extends StatefulWidget {
   Project project;
   ProjectTile({required this.project});
+  
   @override
   State<ProjectTile> createState() => _ProjectTileState();
 }
 
 class _ProjectTileState extends State<ProjectTile> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  List<dynamic> uid_list = [];
+
+  void _showEditPanel(){
+      showModalBottomSheet(context: context,builder: (context){
+        return EditProject(project: widget.project);
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
-    /* void _showEditPanel(){
-      showModalBottomSheet(context: context,builder: (context){
-        return EditTask(task: widget.task);
-      });
-    } */
-    //if(widget.task.uid == uid){
+
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
+    
+    FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
+      setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
+      
+
+    });
+    if(uid_list.contains(uid.toString())){
       return Padding(
         padding: EdgeInsets.only(top: 10),
         child:
@@ -33,15 +47,18 @@ class _ProjectTileState extends State<ProjectTile> {
           child: Card(
           margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
           child: ListTile(
-            //title: Text("Task: "+ widget.project.tasks.doc().id),
+            title: Text(widget.project.title),
             subtitle: Text(widget.project.text),
+            trailing: IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => _showEditPanel(),  
             ),
-            
+            ),
           ),
         ), 
-          
       );
-    //} if
-    //else return SizedBox(height: 0,width: 0,);
+    } 
+    else return SizedBox(height: 0,width: 0,);
   }
+  
 }
