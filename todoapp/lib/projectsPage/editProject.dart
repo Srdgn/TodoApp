@@ -91,7 +91,8 @@ class _EditProjectState extends State<EditProject> {
                   FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
                   setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
                 });
-                  DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, uid_list,/*CollectionReference tasks,*/  project.admin_ids);
+                print(uid_list);
+                  DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, [uid],/*CollectionReference tasks,*/  project.admin_ids);
                 }
             ),
             SizedBox(height: 20,),
@@ -110,7 +111,7 @@ class _EditProjectState extends State<EditProject> {
                   FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
                   setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
                 });
-                  DatabaseService(uid: user.uid).updateProjectData( project.id, project.title, text, uid_list,/*CollectionReference tasks,*/  project.admin_ids);
+                  DatabaseService(uid: user.uid).updateProjectData( project.id, project.title, text, [uid],/*CollectionReference tasks,*/  project.admin_ids);
                 }
             ),
             SizedBox(height: 40,),

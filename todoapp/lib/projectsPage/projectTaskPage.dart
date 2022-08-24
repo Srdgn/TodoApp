@@ -58,7 +58,7 @@ class _ProjectTaskPageState extends State<ProjectTaskPage> {
           appBar: AppBar(
           title: Text(
             style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30) ,
-            'Tasks'),
+            widget.project.title),
           backgroundColor: Colors.blueAccent,
           elevation: 0.0,
           actions: <Widget>[
