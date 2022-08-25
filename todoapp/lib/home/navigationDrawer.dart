@@ -4,6 +4,8 @@ import 'package:todoapp/service/auth.dart';
 import 'package:todoapp/screens/login.dart';
 import 'package:todoapp/screens/projectsPage.dart';
 import "package:todoapp/screens/usersPage.dart";
+import 'package:todoapp/screens/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   AuthService _auth = new AuthService();
@@ -75,8 +77,21 @@ class NavigationDrawerWidget extends StatelessWidget {
               },
             ),
             buildMenuItem(
-              text: "Users",
+              text: "Profile",
               icon: Icons.person_rounded,
+              ontap:() async {
+                final FirebaseAuth auth = FirebaseAuth.instance;
+                final User? user = auth.currentUser;
+                final uid = user!.uid;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage(user_id : uid)),
+                  );
+              },
+            ),
+            buildMenuItem(
+              text: "Users",
+              icon: Icons.people_rounded,
               ontap:() async {
                 Navigator.push(
                   context,

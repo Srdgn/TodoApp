@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/models/task.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,9 +17,11 @@ class EditProject extends StatefulWidget {
 class _EditProjectState extends State<EditProject> {
   List<dynamic> uid_list = [];    
   List<dynamic> admin_list = [];
+  
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
+    bool visible = project.visible;
     String text = project.text;
     String title = project.title;
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -46,6 +49,12 @@ class _EditProjectState extends State<EditProject> {
                         Navigator.pop(context);
                         
                         await DatabaseService(uid: user.uid).deleteProjectData(project.id);
+                        FirebaseFirestore.instance.collection('users').doc(uid).get().then((DocumentSnapshot documentSnapshot) {
+                          String name = documentSnapshot["name"];
+                          List<String> project_list= List.from(documentSnapshot["project_ids"]);
+                          project_list.remove(project.id);
+                          DatabaseService(uid: user.uid).updateUserData( name , project_list);
+                        });  
                       },
                       icon: Icon(Icons.delete,color: Colors.white,),
                       label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
@@ -91,10 +100,10 @@ class _EditProjectState extends State<EditProject> {
                 ),
                 onChanged: (title) { 
 
-                  FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
+                   FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
                     setState(() { admin_list= List.from(documentSnapshot["admin_ids"]); });
                     setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
-                    DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, uid_list,/*CollectionReference tasks,*/  admin_list);
+                    DatabaseService(uid: user.uid).updateProjectData( project.id, title, project.text, uid_list,/*CollectionReference tasks,*/  admin_list, project.visible);
                   });
                 }
             ),
@@ -114,8 +123,9 @@ class _EditProjectState extends State<EditProject> {
                   FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
                     setState(() { admin_list= List.from(documentSnapshot["admin_ids"]); });
                     setState(() { uid_list= List.from(documentSnapshot["user_ids"]); });
-                    DatabaseService(uid: user.uid).updateProjectData( project.id, project.title,text, uid_list,/*CollectionReference tasks,*/  admin_list);
+                    DatabaseService(uid: user.uid).updateProjectData( project.id, project.title,text, uid_list,  admin_list, project.visible);
                   });
+                  
                 }
             ),
             SizedBox(height: 40,),
@@ -128,6 +138,27 @@ class _EditProjectState extends State<EditProject> {
               label: Text("Delete",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
             SizedBox(height: 10,),
+            RaisedButton.icon(
+              color: Colors.blueAccent,
+              onPressed: (){
+                setState(() {
+                  visible = !visible;
+                }); 
+                 FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
+                    admin_list= List.from(documentSnapshot["admin_ids"]); 
+                    uid_list= List.from(documentSnapshot["user_ids"]);
+                    DatabaseService(uid: user.uid).updateProjectData( project.id, project.title,project.text, uid_list,admin_list, !project.visible);
+                  });
+                  Navigator.pop(context);
+              },
+              icon: visible
+                ?Icon(Icons.lock , color: Colors.white,)
+                :Icon(Icons.lock_open , color: Colors.white,),
+              label:visible
+                ?Text("Make Private",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold))
+                :Text("Make Public",style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(height: 10,),
 
 
             
@@ -137,3 +168,4 @@ class _EditProjectState extends State<EditProject> {
     );
   }
 }
+

@@ -12,10 +12,12 @@ class DatabaseService{
 
 
   //          USERS
-  Future updateUserData(String name)async{
+  Future updateUserData(String name, List<dynamic> project_ids)async{
     return await userCollection.doc(uid).set({
       "name": name,
-      
+      "id" : uid,
+      "project_ids": FieldValue.arrayUnion(project_ids),  
+
     });
   }
   Stream<List<User2>> get users{
@@ -80,11 +82,12 @@ class DatabaseService{
         user_ids: doc.get("user_ids") ?? <String>[],
         //tasks: tasksCollection,                     
         admin_ids: doc.get("admin_ids")?? <String>[],
+        visible: doc.get("visible") ?? true,
         );
     }).toList();
   }
 
-  Future updateProjectData(String id,String title, String text, List<dynamic> user_ids,/*CollectionReference tasks,*/ List<dynamic> admin_ids)async{
+  Future updateProjectData(String id,String title, String text, List<dynamic> user_ids,/*CollectionReference tasks,*/ List<dynamic> admin_ids, bool visible)async{
     print(user_ids);
     print(admin_ids);
     return await projectCollection.doc(id).set({
@@ -94,6 +97,7 @@ class DatabaseService{
       "user_ids":  FieldValue.arrayUnion(user_ids),  
       //"tasks": tasks,
       "admin_ids": FieldValue.arrayUnion(admin_ids),  
+      "visible": visible,
     });
   }
   Stream<List<Project>> get projects{

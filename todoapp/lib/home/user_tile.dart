@@ -10,6 +10,8 @@ class UserTile extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    print(user.name);
+
     UsersPage.users_names.add(user.name);
     return Padding(
       padding: EdgeInsets.only(top: 10),
