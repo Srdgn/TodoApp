@@ -36,7 +36,6 @@ class _UsersPageState extends State<UsersPage> {
             FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(
               onPressed: (){
-                print(UsersPage.users_names);
                 showSearch(
                   context: context,
                    delegate: MySearchDelegate(),

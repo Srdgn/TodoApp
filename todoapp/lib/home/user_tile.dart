@@ -10,15 +10,13 @@ class UserTile extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    print(user.name);
-
     UsersPage.users_names.add(user.name);
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Card(
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
         child: ListTile(
-          leading: ButtonWithIcon(user_id: user.id),
+          leading: ButtonWithIcon(user: user),
           title: Text(user.name),
         ),
         ),
@@ -27,8 +25,8 @@ class UserTile extends StatelessWidget {
 }
 
 class ButtonWithIcon extends StatefulWidget {
-  String user_id;
-  ButtonWithIcon({required this.user_id});
+  User2 user;
+  ButtonWithIcon({required this.user});
 
   @override
   State<ButtonWithIcon> createState() => _ButtonWithIconState();
@@ -51,7 +49,7 @@ class _ButtonWithIconState extends State<ButtonWithIcon> {
             onPressed: () { 
             Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  ProfilePage(user_id: widget.user_id)),
+                  MaterialPageRoute(builder: (context) =>  ProfilePage(user: widget.user)),
                   );
              },   // see profile 
          ),
