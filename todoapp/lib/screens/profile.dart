@@ -8,8 +8,8 @@ import 'package:todoapp/models/user2.dart';
 import 'package:todoapp/profilePage/profileProjectList.dart';
 
 class ProfilePage extends StatefulWidget{
-  User2 user;
-  ProfilePage({required this.user});
+  String user_id;
+  ProfilePage({required this.user_id});
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
           elevation: 0.0,
           
         ),
-          body: ProfileProjectList(user: widget.user),
+          body: ProfileProjectList(user_id: widget.user_id),
         ),  
     );
   }

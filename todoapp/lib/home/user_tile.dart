@@ -49,7 +49,7 @@ class _ButtonWithIconState extends State<ButtonWithIcon> {
             onPressed: () { 
             Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  ProfilePage(user: widget.user)),
+                  MaterialPageRoute(builder: (context) =>  ProfilePage(user_id: widget.user.id)),
                   );
              },   // see profile 
          ),

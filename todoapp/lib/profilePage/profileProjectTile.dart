@@ -7,8 +7,8 @@ import 'package:todoapp/models/user2.dart';
 
 class ProfileProjectTile extends StatefulWidget {
   Project project;
-  User2 projectUser;
-  ProfileProjectTile({required this.project, required this.projectUser});
+  String projectUser_id;
+  ProfileProjectTile({required this.project, required this.projectUser_id});
   
   @override
   State<ProfileProjectTile> createState() => _ProfileProjectTileState();
@@ -34,7 +34,7 @@ class _ProfileProjectTileState extends State<ProfileProjectTile> {
       setState(() { visible=documentSnapshot["visible"]; });
 
     });
-    if(uid_list.contains(widget.projectUser.id) && visible){
+    if(uid_list.contains(widget.projectUser_id) && visible){
       return Padding(
         padding: EdgeInsets.only(top: 10),
         child:

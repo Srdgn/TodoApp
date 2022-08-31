@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,17 +8,26 @@ import 'profileProjectTile.dart';
 import 'package:todoapp/models/user2.dart';
 
 class ProfileProjectList extends StatefulWidget {
-  User2 user;
-  ProfileProjectList({required this.user});
+  String user_id;
+  ProfileProjectList({required this.user_id});
   @override
   _ProfileProjectListState createState() => _ProfileProjectListState();
 }
 
 class _ProfileProjectListState extends State<ProfileProjectList> {
   @override
+  static String name = "";
   Widget build(BuildContext context) {
     final projects = Provider.of<List<Project>>(context);
-          
+    List<Project> project_list = projects.toList();
+    
+
+    
+    FirebaseFirestore.instance.collection('users').doc(widget.user_id).get().then((DocumentSnapshot documentSnapshot) {
+        _ProfileProjectListState.name = documentSnapshot["name"];
+        
+
+    });
     return Padding(
       padding: const EdgeInsets.only(bottom: 60),
       
@@ -31,7 +41,9 @@ class _ProfileProjectListState extends State<ProfileProjectList> {
                 height: 40,
               ),
               Text(
-                "Name: "+ widget.user.name,
+
+
+                "Name: "+name,
                 style: TextStyle(
                   color: Colors.blueGrey,
                   letterSpacing: 2,
@@ -56,7 +68,7 @@ class _ProfileProjectListState extends State<ProfileProjectList> {
                     itemCount: projects.length,
                     itemBuilder: (context , index){
                       
-                      return ProfileProjectTile(project: projects[index], projectUser: widget.user);
+                      return ProfileProjectTile(project: projects[index], projectUser_id: widget.user_id);
                       
                     },
                     ),

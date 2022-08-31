@@ -7,13 +7,3 @@ class User2{
   User2({required this.name, required this.id, required this.project_ids});
 }
 
-User2 uidToUser2(String uid){
-  FirebaseFirestore.instance.collection('users').doc(uid).get().then((DocumentSnapshot documentSnapshot) {
-      String name= documentSnapshot["name"];
-      String id = documentSnapshot["id"];
-      List<String> project_ids = List.from(documentSnapshot["project_ids"]); 
-      return User2(name: name, id: id, project_ids: project_ids);
-    });
-  return User2(name: "name", id: "id", project_ids: []);
-
-}

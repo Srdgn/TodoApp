@@ -86,10 +86,11 @@ class NavigationDrawerWidget extends StatelessWidget {
                 final User? user = auth.currentUser;
                 final uid = user!.uid;
                 
+                print(uid);
+                Navigator.push(
 
-              Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(user : uidToUser2(uid))),
+                  MaterialPageRoute(builder: (context) => ProfilePage(user_id : uid)),
                   );
                 
               },
