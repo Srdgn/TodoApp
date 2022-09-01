@@ -43,11 +43,17 @@ class _ProjectTaskPageState extends State<ProjectTaskPage> {
 
   final AuthService _auth = AuthService();
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
+    List<dynamic> admin_list = [];
+
   
   
   @override
    Widget build(BuildContext context) {
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
+    FirebaseFirestore.instance.collection('projects').doc(widget.project.id).get().then((DocumentSnapshot documentSnapshot) {
+                    setState(() { admin_list= List.from(documentSnapshot["admin_ids"]); });
+    });
     CollectionReference tasks = FirebaseFirestore.instance.collection("projects").doc(widget.project.id).collection("tasks");
     final Stream<List<Task>> tasksStream = projectTasks(tasks.snapshots());
     return StreamProvider<List<Task>>.value(
@@ -66,20 +72,21 @@ class _ProjectTaskPageState extends State<ProjectTaskPage> {
         ),
         
         body: ProjectTaskList(),
-        floatingActionButtonLocation: 
-            FloatingActionButtonLocation.miniCenterDocked,
-        floatingActionButton: FloatingActionButton(
+        floatingActionButtonLocation:FloatingActionButtonLocation.miniCenterDocked,
+
+        floatingActionButton: admin_list.contains(uid.toString())
+          ?FloatingActionButton(
             onPressed: ()async{
               var id = Uuid();
-              final User? user = auth.currentUser;
-              final uid = user!.uid;
+              
               Task task = Task(id: id.v1(),project_id: widget.project.id,title: "",text: "" ,uid: user.uid,checked: false);
               await showModalBottomSheet(context: context,builder: (context){
                 return EditTask(task: task,projectTask: true,);
               });              
             },
             child: Icon(Icons.add),
-            ),
+            )
+          : null,
             
         ),
         

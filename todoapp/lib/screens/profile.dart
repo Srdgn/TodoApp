@@ -6,6 +6,8 @@ import 'package:todoapp/models/project.dart';
 import 'package:todoapp/service/database.dart';
 import 'package:todoapp/models/user2.dart';
 import 'package:todoapp/profilePage/profileProjectList.dart';
+import 'package:todoapp/profilePage/profileProjectList.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfilePage extends StatefulWidget{
   String user_id;
@@ -15,13 +17,14 @@ class ProfilePage extends StatefulWidget{
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
+  
 
   @override
-
-     
+  
+  
   Widget build(BuildContext context) {
   //DocumentSnapshot userSnapshot = FirebaseFirestore.instance.collection('users').doc(widget.user_id).get();
+    
     return StreamProvider<List<Project>>.value(
       initialData: [],
       value: DatabaseService().projects,
