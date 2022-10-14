@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'signup.dart';
 import "homepage.dart";
 import 'package:todoapp/service/auth.dart';
+import "package:todoapp/screens/projectsPage.dart";
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                           else{
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  Homepage()),
+                              MaterialPageRoute(builder: (context) =>  ProjectsPage()),
                             );
                           }     
                         },

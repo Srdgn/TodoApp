@@ -44,6 +44,7 @@ class _ProfileProjectListState extends State<ProfileProjectList> {
                     children: [
                       Icon(Icons.folder_copy_rounded),
                       SizedBox(width: 25),
+                      /*
                       StreamBuilder(
                         stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
                         builder: (context, snapshot) {
@@ -74,7 +75,7 @@ class _ProfileProjectListState extends State<ProfileProjectList> {
                             );
                           },
                         
-                      )
+                      )*/
                     ],
                   ),
                   SizedBox(height: 100,),
